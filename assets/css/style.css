@@ -1,0 +1,86 @@
+
+
+body {
+
+	background-color: black;
+	color: white;
+}
+
+h1 {
+
+	font-family: 'Bowlby One SC', cursive;
+	font-size: 60px;
+	text-align: right;
+	padding: 40px;
+}
+
+h2 {
+	
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 40px;
+	text-align: center;
+	padding: 20px;
+
+}
+
+p {
+	
+	font-family: 'Audiowide', cursive;
+	font-size: 30px;
+	padding: 10px;
+}
+
+button {
+	
+	font-family: 'Audiowide', cursive;
+	padding: 5px;
+	margin: 10px;
+	font-weight: bold;
+
+}
+
+
+.container {
+
+	background-image: url('../images/giphy.gif');
+	background-repeat: repeat;
+	margin: 20px;
+}
+
+
+.select-character {
+
+	/*background-color: */
+	
+}
+
+/* character class to format images in game */
+.characters {
+
+	text-align: center;
+	border: 2px solid white;
+	float: left;
+	width: 24%;
+}
+
+.char-name {
+
+	font-size: 25px;
+}
+
+.char-image {
+
+	padding: 10px;
+}
+
+.char-hp {
+
+	font-size: 20px;
+}
+
+#your-character {
+
+	clear: both;
+}
+
+
