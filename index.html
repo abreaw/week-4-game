@@ -13,7 +13,8 @@
 	<!-- link to bootstrap CDN if using it here -->
 
 	<!-- link to jQuery CDN here -->
-	<script src="https://code.jquery.com/jquery.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
 </head>
@@ -30,36 +31,39 @@
 			<h2 id="user-msgs"></h2>
 			<!-- divs for characters to be setup at the start of the game -->
 			<!-- this might be best done in the jQuery code but not sure yet -->
-			<div id="char1" class="characters"><!-- 
+			<div id="char1" class="characters align-characters"><!-- 
 				<p class="char-name">Rey</p>
 				<img src="assets/images/071e0c1c4323f477e6272dab6153ab22.jpg" width="30%" height="30%" class="char-image">
 				<p class="char-hp">100</p>
 			 --></div>
-			<div id="char2" class="characters">
+			<div id="char2" class="characters align-characters">
 				<!-- <p class="char-name">Princess Leia</p>
 				<img src="assets/images/d3dab1e853245b37565836cc185b759f.jpg" width="30%" height="30%">
 				<p class="char-hp">150</p> -->
 			</div>
-			<div id="char3" class="characters"></div>
-			<div id="char4" class="characters"></div>
+			<div id="char3" class="characters align-characters"></div>
+			<div id="char4" class="characters align-characters"></div>
 		</div>
 
 
 		
 		<!-- area for the players selected character -->
-		<div id="your-character"></div>
-		<p>Your Character</p>
-
+		<div id="your-character">
+			<p>Your Character</p>
+		</div>
 
 		<!-- area for the defenders to be selected -->
-		<div id="select-defender"></div>
-		<p>Enemies to Attack</p>
+		<div id="select-defender">
+			<p>Enemies to Attack</p>
+		</div>
 
 
-		<p>Fight Section</p>
-		<!-- button available once player character & defender selected for fight -->
-		<button id="attack">Attack</button>
-		
+		<!-- area to show figt info -->
+		<div id="fight-section">
+			<p>Fight Section</p>
+			<!-- button available once player character & defender selected for fight -->
+			<button id="attack">Attack</button>
+		</div>
 
 		<!-- are for the selected defender to be shown -->
 		<div id="opponent"></div>

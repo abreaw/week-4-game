@@ -52,6 +52,13 @@ button {
 
 	/*background-color: */
 	
+	
+}
+
+.current-char {
+	
+	background-color: white;
+	color: black;
 }
 
 /* character class to format images in game */
@@ -59,8 +66,12 @@ button {
 
 	text-align: center;
 	border: 2px solid white;
+	width: 20%;
+}
+
+.align-characters {
+
 	float: left;
-	width: 24%;
 }
 
 .char-name {
@@ -78,9 +89,19 @@ button {
 	font-size: 20px;
 }
 
+/* not needed here */
 #your-character {
 
-	clear: both;
+	clear: left;
 }
+
+.current-enemies {
+
+	background-color: red;
+	color: black;
+	border-color: black;
+}
+
+
 
 

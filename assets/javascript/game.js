@@ -22,6 +22,7 @@ var imgHeight = "200px";
 var charRey = {
 
 	charName: "Rey",
+	charDataValue: "Rey",
 	charImage: "assets/images/071e0c1c4323f477e6272dab6153ab22.jpg",
 	charHP: 100,
 	charAttack: 10,
@@ -34,6 +35,7 @@ var charRey = {
 var charLeia = {
 
 	charName: "Princess Leia",
+	charDataValue: "Leia",
 	charImage: "assets/images/d3dab1e853245b37565836cc185b759f.jpg",
 	charHP: 150,
 	charAttack: 15,
@@ -46,6 +48,7 @@ var charLeia = {
 var charKylo = {
 
 	charName: "Kylo Ren",
+	charDataValue: "Kylo",
 	charImage: "assets/images/8e7d7c3e88672062e95e32fc06493d1b.jpg",
 	charHP: 200,
 	charAttack: 20,
@@ -58,6 +61,7 @@ var charKylo = {
 var charBoba = {
 
 	charName: "Boba Fett",
+	charDataValue: "Boba",
 	charImage: "assets/images/a1ba8daac41c385e79fc5315b1679ca1.jpg",
 	charHP: 80,
 	charAttack: 5,
@@ -109,36 +113,86 @@ $(document).ready(function() {
 
 	resetGame(true);
 
-	
-
 
 });
 
 
 // -----------------------------------------------------------------------------------------------
-// listen for character click
+// listen for character click in select-character id section
 // -----------------------------------------------------------------------------------------------
-$(".characters").on("click", function() {
+// $("#select-character").find("div.characters").on("click", function() {
+$("#select-character .characters").on("click", function() {
 
 	// move that character to the your character section - #your-character
-	// console.log($(this.id));
-	// currentPlayer = $(this.id);
-	// console.log(currentPlayer);
 
-	// currentPlayer = $(this).attr("id");
-	// console.log(currentPlayer);
 
-	currentPlayer = $(this).attr("class", "char-name").text();
-	console.log(currentPlayer);
+	// currentPlayer = this.value; // not sure why this is not working like it did in the jquery calculator example
+	console.log("here ")
+	console.log(this)
+	currentPlayer = $(this).attr("value");
+	console.log("currentPlayer = " + currentPlayer);
+
+	var currentPlayerID = $(this).attr("id");
+	console.log("currentPlayerID = " + currentPlayerID);
+
+	// grab the selection made by the user
+	var currentPlayerElement = $("#" + $(this).attr("id"));
+	console.log("currentPlayerElement = " + currentPlayerElement);
+
 
 	// set the isPlayer to true
+	// not sure if this is needed
+
+	// turn off float left 
+	// $(currentPlayerElement).css("clear","left"); // not working as thought
+
+	// remove alignment property on the currentPlayer Element
+	$(currentPlayerElement).removeClass("align-characters");
+
+	// add current-char class to change background & font color
+	$(currentPlayerElement).addClass("current-char");
+
+
+	// move current character to the #your-character section
+	$("#your-character").append(currentPlayerElement);
+
 	// move the rest of the characters to the Enemies section
+	$("#select-defender").append($("#select-character .characters"));
+
+	// add current-enemies class to rest of characters that are now enemies
+	$("#select-defender .characters").addClass("current-enemies");
+
+	// turn off float left on other sections below
+	$("#fight-section").css("clear","left"); // not working as thought
+
 	// change the user message to show the user to select their first enemy to battle - userMessages.chooseEnemy
+	// tell user to select a character
+	$("#user-msgs").text(userMessages.chooseEnemy);
 
 
 
 });
 
+// listen for enemy character to be selected
+// $("#select-defender .current-enemies").on("click", function() {
+$("#select-defender").find(".current-enemies").on("click", function() {
+	console.log('theres')
+	// grab the selection made by the user
+	var currentEnemyElement = $("#" + $(this).attr("id"));
+	console.log("currentEnemyElement = " + currentEnemyElement);
+
+	// remove alignment property on the currentEnemyElement Element
+	$(currentEnemyElement).removeClass("align-characters");
+
+	// move current character to the #yopponent section
+	$("#opponent").append(currentEnemyElement);
+
+
+
+	// enable attack button
+	$("#attack").prop('disabled', false);
+
+});
 
 // -----------------------------------------------------------------------------------------------
 // listen for attack button click 
@@ -158,16 +212,23 @@ $("#attack").on("click", function() {
 // create the view of the character on the page
 function createCharView (char, divArea, arrayIndex) {
 
-	console.log("char = " + char.charName + ", " + char.charImage + ", " + char.charHP + ", " + char.charAttack + ", " + char.charCounterAttack);
+	console.log("char = " + char.charName + ", " + char.charDataValue + ", " + char.charImage + ", " + char.charHP + ", " + char.charAttack + ", " + char.charCounterAttack);
 	console.log("divArea = " + divArea);
 
 	// create element inside the divArea
-	
+	// var newDiv = $("<div>");
+	// newDiv.attr("value", char.charDataValue);
+	// console.log("new Div Value = " + char.charDataValue);
+	// newDiv.appendTo("#" + divArea);
+
+	$("#" + divArea).attr("value", char.charDataValue);
+
 	// create name tag
 	var pName = $("<p>");
 	pName.addClass("char-name");
 	pName.text(char.charName);
 	pName.appendTo("#" + divArea);
+	// pName.appendTo(newDiv);
 
 	// create image
 	var imgTag = $("<img>");
@@ -175,6 +236,8 @@ function createCharView (char, divArea, arrayIndex) {
 	imgTag.attr("src", char.charImage);
 	imgTag.attr("width", imgWidth);
 	imgTag.attr("height", imgHeight);
+	imgTag.attr("value", char.charDataValue);
+	console.log("imgTag value = " + imgTag.attr("value"));
 	// imgTag.text(char.charImage);
 	imgTag.appendTo("#" + divArea);
 
@@ -192,12 +255,14 @@ function resetGame (newLoad) {
 	if (!newLoad) {
 		// empty opponent id
 		// empty select-defender id
-		// disable attack button
 		// empty your-character id
 		// reset isPlayer & isEnemy back to false (if this is needed)
 	}
 
+	// disable attack button
+	$("#attack").prop('disabled', true);
 
+	// tell user to select a character
 	$("#user-msgs").text(userMessages.chooseChar);
 
 	// run createCharView function for all characters
