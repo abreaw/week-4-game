@@ -121,7 +121,9 @@ $(document).ready(function() {
 // listen for character click in select-character id section
 // -----------------------------------------------------------------------------------------------
 // $("#select-character").find("div.characters").on("click", function() {
-$("#select-character .characters").on("click", function() {
+$("#select-character").on("click", ".characters", function() {  //  .characters  // removed to see if this works now
+// trying w/ event delegation in place since the new items added to the other divs will need this to run??
+// https://learn.jquery.com/events/event-delegation/
 
 	// move that character to the your character section - #your-character
 
@@ -169,13 +171,16 @@ $("#select-character .characters").on("click", function() {
 	// tell user to select a character
 	$("#user-msgs").text(userMessages.chooseEnemy);
 
+	console.log($(".current-enemies"));
+
 
 
 });
 
 // listen for enemy character to be selected
-// $("#select-defender .current-enemies").on("click", function() {
-$("#select-defender").find(".current-enemies").on("click", function() {
+// $("#char* .current-enemies").on("click", function() {
+$("#select-defender").on("click", ".current-enemies", function() {
+// $("#select-defender").find("div.current-enemies").on("click", function() {
 	console.log('theres')
 	// grab the selection made by the user
 	var currentEnemyElement = $("#" + $(this).attr("id"));
