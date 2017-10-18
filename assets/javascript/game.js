@@ -11,6 +11,8 @@ var currentEnemy;
 var currentPlayer;
 var charHealth;
 var enemyHealth;
+var charAttackPwr;
+var enemyAttackPwr;
 
 var imgWidth = "150px";
 var imgHeight = "200px";
@@ -83,6 +85,7 @@ var userMessages = {
     // types of messages w/ values
     chooseChar: "Click to select your character.",
     chooseEnemy: "Click an enemy to battle.",
+    attackEnemy: "Click the 'Attack' button to battle.",
     youLost: "So sorry you didn't guess it right this time.",
     youWon: "Yay! You won!",
 
@@ -145,6 +148,10 @@ $("#select-character").on("click", ".characters", function() {  //  .characters 
 	// set the isPlayer to true
 	// not sure if this is needed
 
+	// get current character info 
+	// set hp & attack power variable
+	
+
 	// turn off float left 
 	// $(currentPlayerElement).css("clear","left"); // not working as thought
 
@@ -153,7 +160,6 @@ $("#select-character").on("click", ".characters", function() {  //  .characters 
 
 	// add current-char class to change background & font color
 	$(currentPlayerElement).addClass("current-char");
-
 
 	// move current character to the #your-character section
 	$("#your-character").append(currentPlayerElement);
@@ -186,16 +192,25 @@ $("#select-defender").on("click", ".current-enemies", function() {
 	var currentEnemyElement = $("#" + $(this).attr("id"));
 	console.log("currentEnemyElement = " + currentEnemyElement);
 
+	// get current opponent info
+	// set hp & counter attack power variables
+
+
 	// remove alignment property on the currentEnemyElement Element
 	$(currentEnemyElement).removeClass("align-characters");
 
 	// move current character to the #yopponent section
 	$("#opponent").append(currentEnemyElement);
 
-
+	// add current-opponent class to change background, border & font color
+	$(currentEnemyElement).addClass("current-opponent");
 
 	// enable attack button
 	$("#attack").prop('disabled', false);
+
+	// change the user message to show the user to attack their first enemy selected - userMessages.attackEnemy
+	// tell user to click the attack button
+	$("#user-msgs").text(userMessages.attackEnemy);
 
 });
 
@@ -204,6 +219,27 @@ $("#select-defender").on("click", ".current-enemies", function() {
 // -----------------------------------------------------------------------------------------------
 $("#attack").on("click", function() {
 
+	// check to see if current chars hp > 0
+		// check to see if current opponents hp > 0
+			// attack opponent -- decrement opponent's hp by current character's attack power
+			// counter attack -- decrement current character's hp by current opponent's counter attack power
+			// double current character's attack power
+			// display attack info to user
+			// update health points info for current char
+			// update health points info for current enemy
+		// if enemy dead
+			// check to see if any opponents left
+				// delete opponent character 
+				// disable attack button 
+				// display user msg to select another opponent
+				// wait for another char to be selected
+			// no more opponents then
+				// game won function called
+				// enable reset button for new game to be loaded
+	// else if current char dead
+		// game lost function called
+		// disable attack button
+		// enable reset button for new game to be loaded
 
 });
 
@@ -251,6 +287,18 @@ function createCharView (char, divArea, arrayIndex) {
 	pHP.addClass("char-hp");
 	pHP.text(char.charHP);
 	pHP.appendTo("#" + divArea);
+
+}
+
+// check chars hp
+function isCharDead (charObject) {
+
+
+}
+
+// get char object
+function getCharInfo () {
+
 
 }
 
