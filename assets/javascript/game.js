@@ -133,24 +133,23 @@ $("#select-character").on("click", ".characters", function() {  //  .characters 
 
 	// currentPlayer = this.value; // not sure why this is not working like it did in the jquery calculator example
 	console.log("here ")
-	console.log(this)
-	currentPlayer = $(this).attr("value");
-	console.log("currentPlayer = " + currentPlayer);
-
-	var currentPlayerID = $(this).attr("id");
-	console.log("currentPlayerID = " + currentPlayerID);
-
+	
 	// grab the selection made by the user
 	var currentPlayerElement = $("#" + $(this).attr("id"));
 	console.log("currentPlayerElement = " + currentPlayerElement);
-
 
 	// set the isPlayer to true
 	// not sure if this is needed
 
 	// get current character info 
+	currentPlayer = getCharInfo($(this).attr("value"));
+	console.log("current player object = " + currentPlayer);
+
 	// set hp & attack power variable
-	
+	charHealth = currentPlayer.charHP;
+	console.log("current health = " + charHealth);
+	charAttackPwr = currentPlayer.charAttack;
+	console.log("current attack power = " + charAttackPwr);
 
 	// turn off float left 
 	// $(currentPlayerElement).css("clear","left"); // not working as thought
@@ -193,8 +192,15 @@ $("#select-defender").on("click", ".current-enemies", function() {
 	console.log("currentEnemyElement = " + currentEnemyElement);
 
 	// get current opponent info
-	// set hp & counter attack power variables
+	currentEnemy = getCharInfo($(this).attr("value"));
+	console.log("current player object = " + currentEnemy);
 
+	// set hp & counter attack power variables
+	enemyHealth = currentEnemy.charHP;
+	console.log("current health = " + enemyHealth);
+	enemyAttackPwr = currentEnemy.charCounterAttack;
+	console.log("current attack power = " + enemyAttackPwr);
+	
 
 	// remove alignment property on the currentEnemyElement Element
 	$(currentEnemyElement).removeClass("align-characters");
@@ -297,8 +303,29 @@ function isCharDead (charObject) {
 }
 
 // get char object
-function getCharInfo () {
+function getCharInfo (selectedValue) {
 
+	// declare variable to hold index of object in the charArray
+	// var indexNum;
+
+	// console.log("getCharInfo selectedValue = " + selectedValue);
+
+	// check to see if any of the objects in the charArray have the selectedValue
+	for (var i = 0; i < charArray.length; i++) {
+
+		// console.log("checking for datavalue = " + charArray[i].charDataValue);
+
+		// is the selectedValue in the current arrary object?
+		if (charArray[i].charDataValue === selectedValue) {
+
+			// console.log("data value found = " + i);
+			return charArray[i];
+		}
+	}
+	
+	// indexNum = charArray.indexOf(selectedValue);
+	// console.log("indexNum of Char Array = " + indexNum);
+	// if (charArray.indexOf(selectedValue))
 
 }
 
