@@ -14,7 +14,8 @@
 
 	<!-- link to jQuery CDN here -->
 	<!-- <script src="https://code.jquery.com/jquery.js"></script> -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 
 
 </head>
@@ -31,10 +32,10 @@
 			<h2 id="user-msgs"></h2>
 			<!-- divs for characters to be setup at the start of the game -->
 			<!-- this might be best done in the jQuery code but not sure yet -->
-			<div id="char1" class="characters align-characters"></div>
+			<!-- <div id="char1" class="characters align-characters"></div>
 			<div id="char2" class="characters align-characters"></div>
 			<div id="char3" class="characters align-characters"></div>
-			<div id="char4" class="characters align-characters"></div>
+			<div id="char4" class="characters align-characters"></div> -->
 		</div>
 
 
@@ -53,6 +54,7 @@
 		<!-- area to show figt info -->
 		<div id="fight-section">
 			<p>Fight Section</p>
+			<p id="fight-info"></p>
 			<!-- button available once player character & defender selected for fight -->
 			<button id="attack">Attack</button>
 		</div>
