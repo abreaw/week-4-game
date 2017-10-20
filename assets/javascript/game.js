@@ -10,7 +10,6 @@ var charSelectionCount = 0; // might need this if I add more characters later??
 var currentEnemy;
 var currentPlayerElement;
 var currentPlayer;
-var currentPlayerElement;
 var charHealth;
 var enemyHealth;
 var charAttackPwr;
@@ -90,7 +89,7 @@ var userMessages = {
     chooseChar: "Click to select your character.",
     chooseEnemy: "Click an enemy to battle.",
     attackEnemy: "Click the 'Attack' button to battle.",
-    youLost: "So sorry you didn't guess it right this time.",
+    youLost: "You have been defeated! Pick wisely next time you must!",
     youWon: "Yay! You won!",
 
     // check to see if userMessages object methods working properly
@@ -244,41 +243,27 @@ $("#attack").on("click", function() {
 
 	// check to see if current chars hp > 0
 	// if (charHealth > 0) {
-	if (isAlive(charHealth)) {
+	// if (isAlive(charHealth)) {
 
 		// check to see if current opponents hp > 0
 		// if (enemyHealth > 0) {
-		if (isAlive(enemyHealth)) {
+		// if (isAlive(enemyHealth)) {
 
 			console.log("attack opponent here");
 			// attack opponent -- decrement opponent's hp by current character's attack power
 			enemyHealth = enemyHealth - charAttackPwr;
 			console.log("enemyHealth = " + enemyHealth);
 
-			console.log("counter attack player here");
-			// counter attack -- decrement current character's hp by current opponent's counter attack power
-			charHealth = charHealth - enemyAttackPwr;
-			console.log("charHealth = " + charHealth);
-
-			// display attack info to user
-			userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
-			userFightMsg += "<br>";
-			userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
-
-			// $("#fight-info").text(userFightMsg);
-			$("#fight-info").html(userFightMsg);
-			// $("#fight-info").text(currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.");
-
-			// double attack power for current player
-			charAttackPwr += charAttackPwr;
-
-			// update health points info for current char
-			updateCharHPView(currentPlayerElement, charHealth);
-
 			if (isAlive(enemyHealth)) {
 
 				// update health points info for current enemy - 
 				updateCharHPView(currentEnemyElement, enemyHealth);
+
+				// display attack info to user
+				userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
+				userFightMsg += "<br>";
+				$("#fight-info").html(userFightMsg);
+
 			}
 			else {
 
@@ -317,38 +302,135 @@ $("#attack").on("click", function() {
 
 			}
 
-		}
-		else {
+			console.log("counter attack player here");
+			// counter attack -- decrement current character's hp by current opponent's counter attack power
+			charHealth = charHealth - enemyAttackPwr;
+			console.log("charHealth = " + charHealth);
+
+			if (!isAlive(charHealth)) {
+
+				console.log("going to call userLost function now " + charSelectionCount);
+				// game lost function called
+				userLost();
+
+				userFightMsg = currentEnemy.charName + " defeated " + currentPlayer.charName + "."
+				$("#fight-info").html(userFightMsg);
+
+				// disable attack button
+				$("#attack").prop('disabled', true);
+
+				// enable reset button for new game to be loaded
+			}
+			else if (isAlive(enemyHealth) && isAlive(charHealth)) {
+
+				userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
+				$("#fight-info").html(userFightMsg);
+
+				// double attack power for current player
+				charAttackPwr += charAttackPwr;
+
+				// update health points info for current char
+				updateCharHPView(currentPlayerElement, charHealth);
+
+			}
+
+			// display attack info to user
+			// userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
+			// userFightMsg += "<br>";
+			// userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
+
+			// $("#fight-info").text(userFightMsg);
+			// $("#fight-info").html(userFightMsg);
+			// $("#fight-info").text(currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.");
+
+			// // double attack power for current player
+			// charAttackPwr += charAttackPwr;
+
+			// // update health points info for current char
+			// updateCharHPView(currentPlayerElement, charHealth);
+
+			// if (isAlive(enemyHealth)) {
+
+			// 	// update health points info for current enemy - 
+			// 	updateCharHPView(currentEnemyElement, enemyHealth);
+
+			// }
+			// else {
+
+			// 	// tell user they defeated the enemy and to choose another enemy
+			// 	userFightMsg = currentPlayer.charName + " defeated " + currentEnemy.charName + "."
+			// 	$("#fight-info").html(userFightMsg);
+
+			// 	// change the user message to show the user to select their first enemy to battle - userMessages.chooseEnemy
+			// 	// tell user to select a character
+			// 	$("#user-msgs").text(userMessages.chooseEnemy);
+
+			// 	// disable attack button
+			// 	$("#attack").prop('disabled', true);
+
+			// 	// delete opponent character 
+			// 	console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
+			// 	currentEnemyElement.remove();
+
+			// 	// check to see if any opponents left
+			// 	if (charSelectionCount <= 0) {
+			// 		// delete opponent character 
+			// 		// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
+			// 		// currentEnemyElement.remove();
+
+			// 		// disable attack button 
+			// 		// display user msg to select another opponent
+			// 		// wait for another char to be selected
+			// 	// no more opponents then
+			// 		// game won function called
+			// 		console.log("going to call userWon function now " + charSelectionCount);
+				
+			// 		userWon();
+
+			// 		// enable reset button for new game to be loaded
+			// 	}
+
+			// }
+
+		// }
+		// else {
 			// if enemy dead
 
-				console.log("charSelectionCount = " + charSelectionCount);
+				// console.log("charSelectionCount = " + charSelectionCount);
 				
 
-				// check to see if any opponents left
-				if (charSelectionCount <= 0) {
-					// delete opponent character 
-					// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-					// currentEnemyElement.remove();
+				// // check to see if any opponents left
+				// if (charSelectionCount <= 0) {
+				// 	// delete opponent character 
+				// 	// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
+				// 	// currentEnemyElement.remove();
 
-					// disable attack button 
-					// display user msg to select another opponent
-					// wait for another char to be selected
-				// no more opponents then
-					// game won function called
-					console.log("going to call userWon function now " + charSelectionCount);
+				// 	// disable attack button 
+				// 	// display user msg to select another opponent
+				// 	// wait for another char to be selected
+				// // no more opponents then
+				// 	// game won function called
+				// 	console.log("going to call userWon function now " + charSelectionCount);
 				
-					userWon();
+				// 	userWon();
 
-					// enable reset button for new game to be loaded
-				}
-		}
-	} 
-	else {
+				// 	// enable reset button for new game to be loaded
+				// }
+		// }
+	// } 
+	// else {
 	// else if current char dead
-		// game lost function called
-		// disable attack button
-		// enable reset button for new game to be loaded
-	}
+	// if (!isAlive(charHealth)) {
+
+	// 	console.log("going to call userLost function now " + charSelectionCount);
+	// 	// game lost function called
+	// 	userLost();
+
+	// 	// disable attack button
+	// 	$("#attack").prop('disabled', true);
+
+	// 	// enable reset button for new game to be loaded
+	// }
 
 });
 
@@ -482,6 +564,23 @@ function userWon () {
 	$("#user-msgs").text(userMessages.youWon);
 	// show reset button
 	$("#reset").css("visibility", "visible");
+}
+
+function userLost () {
+
+	// display won message
+	$("#user-msgs").text(userMessages.youLost);
+
+	// delete opponent character 
+	console.log("you are dead going to remove currentPlayerElement" + currentPlayerElement);
+	currentPlayerElement.remove();
+
+	//delete any remaining characters in the #select-defender div
+	$("#select-defender").empty();
+	
+	// show reset button
+	$("#reset").css("visibility", "visible");
+
 }
 
 // function to reset the game
