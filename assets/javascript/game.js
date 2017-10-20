@@ -32,8 +32,6 @@ var charRey = {
 	charHP: 100,
 	charAttack: 10,
 	charCounterAttack: 5,
-	isPlayer: false,
-	isEnemy: false,
 
 }
 
@@ -45,8 +43,6 @@ var charLeia = {
 	charHP: 150,
 	charAttack: 15,
 	charCounterAttack: 10,
-	isPlayer: false,
-	isEnemy: false,
 
 }
 
@@ -58,8 +54,6 @@ var charKylo = {
 	charHP: 200,
 	charAttack: 20,
 	charCounterAttack: 15,
-	isPlayer: false,
-	isEnemy: false,
 
 }
 
@@ -71,8 +65,6 @@ var charBoba = {
 	charHP: 80,
 	charAttack: 5,
 	charCounterAttack: 3,
-	isPlayer: false,
-	isEnemy: false,
 
 }
 
@@ -111,12 +103,6 @@ $(document).ready(function() {
 
 
 	// create characters on page
-	console.log("charRey = " + charRey);
-
-	// for (var i = 0; i < charArray.length; i++) {
-	// 	createCharView(charArray[i], "char" + (i+1), i);
-	// }
-
 	resetGame(true);
 
 
@@ -126,37 +112,22 @@ $(document).ready(function() {
 // -----------------------------------------------------------------------------------------------
 // listen for character click in select-character id section
 // -----------------------------------------------------------------------------------------------
-// $("#select-character").find("div.characters").on("click", function() {
-$("#select-character").on("click", ".characters", function() {  //  .characters  // removed to see if this works now
-// trying w/ event delegation in place since the new items added to the other divs will need this to run??
+$("#select-character").on("click", ".characters", function() {  
+// trying w/ event delegation in place since the new items added to the other divs will need this to run
 // https://learn.jquery.com/events/event-delegation/
 
 	// move that character to the your character section - #your-character
 
-
-	// currentPlayer = this.value; // not sure why this is not working like it did in the jquery calculator example
-	console.log("here ")
-	
 	// grab the selection made by the user
 	currentPlayerElement = $("#" + $(this).attr("id"));
-	console.log("currentPlayerElement = " + currentPlayerElement);
-
-	// set the isPlayer to true
-	// not sure if this is needed
-
+	
 	// get current character info 
 	currentPlayer = getCharInfo($(this).attr("value"));
-	console.log("current player object = " + currentPlayer);
-
+	
 	// set hp & attack power variable
 	charHealth = currentPlayer.charHP;
-	console.log("current health = " + charHealth);
 	charAttackPwr = currentPlayer.charAttack;
-	console.log("current attack power = " + charAttackPwr);
-
-	// turn off float left 
-	// $(currentPlayerElement).css("clear","left"); // not working as thought
-
+	
 	// remove alignment property on the currentPlayer Element
 	$(currentPlayerElement).removeClass("align-characters");
 
@@ -179,35 +150,26 @@ $("#select-character").on("click", ".characters", function() {  //  .characters 
 	// tell user to select a character
 	$("#user-msgs").text(userMessages.chooseEnemy);
 
-	console.log($(".current-enemies"));
-
 	charSelectionCount--;
-
 
 });
 
+
 // listen for enemy character to be selected
-// $("#char* .current-enemies").on("click", function() {
 $("#select-defender").on("click", ".current-enemies", function() {
-// $("#select-defender").find("div.current-enemies").on("click", function() {
-	console.log('theres')
 
 	userFightMsg = "";
 	$("#fight-info").html(userFightMsg);
 
 	// grab the selection made by the user
 	currentEnemyElement = $("#" + $(this).attr("id"));
-	console.log("currentEnemyElement = " + currentEnemyElement);
 
 	// get current opponent info
 	currentEnemy = getCharInfo($(this).attr("value"));
-	console.log("current player object = " + currentEnemy);
 
 	// set hp & counter attack power variables
 	enemyHealth = currentEnemy.charHP;
-	console.log("current health = " + enemyHealth);
 	enemyAttackPwr = currentEnemy.charCounterAttack;
-	console.log("current attack power = " + enemyAttackPwr);
 	
 
 	// remove alignment property on the currentEnemyElement Element
@@ -235,202 +197,82 @@ $("#select-defender").on("click", ".current-enemies", function() {
 // -----------------------------------------------------------------------------------------------
 $("#attack").on("click", function() {
 
-	console.log("attack 1st view");
-	console.log("charHealth = " + charHealth);
-	console.log("enemyHealth = " + enemyHealth);
-	console.log("charAttackPwr = " + charAttackPwr);
-	console.log("enemyAttackPwr = " + enemyAttackPwr);
-
 	// check to see if current chars hp > 0
-	// if (charHealth > 0) {
-	// if (isAlive(charHealth)) {
 
-		// check to see if current opponents hp > 0
-		// if (enemyHealth > 0) {
-		// if (isAlive(enemyHealth)) {
+	// attack opponent -- decrement opponent's hp by current character's attack power
+	enemyHealth = enemyHealth - charAttackPwr;
+	console.log("enemyHealth = " + enemyHealth);
 
-			console.log("attack opponent here");
-			// attack opponent -- decrement opponent's hp by current character's attack power
-			enemyHealth = enemyHealth - charAttackPwr;
-			console.log("enemyHealth = " + enemyHealth);
+	// check to see if current opponents hp > 0
+	if (isAlive(enemyHealth)) {
 
-			if (isAlive(enemyHealth)) {
+		// update health points info for current enemy - 
+		updateCharHPView(currentEnemyElement, enemyHealth);
 
-				// update health points info for current enemy - 
-				updateCharHPView(currentEnemyElement, enemyHealth);
+		// display attack info to user
+		userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
+		userFightMsg += "<br>";
+		$("#fight-info").html(userFightMsg);
 
-				// display attack info to user
-				userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
-				userFightMsg += "<br>";
-				$("#fight-info").html(userFightMsg);
+	}
+	else {
 
-			}
-			else {
+		// tell user they defeated the enemy and to choose another enemy
+		userFightMsg = currentPlayer.charName + " defeated " + currentEnemy.charName + "."
+		$("#fight-info").html(userFightMsg);
 
-				// tell user they defeated the enemy and to choose another enemy
-				userFightMsg = currentPlayer.charName + " defeated " + currentEnemy.charName + "."
-				$("#fight-info").html(userFightMsg);
+		// change the user message to show the user to select their first enemy to battle - userMessages.chooseEnemy
+		// tell user to select a character
+		$("#user-msgs").text(userMessages.chooseEnemy);
 
-				// change the user message to show the user to select their first enemy to battle - userMessages.chooseEnemy
-				// tell user to select a character
-				$("#user-msgs").text(userMessages.chooseEnemy);
+		// disable attack button
+		$("#attack").prop('disabled', true);
 
-				// disable attack button
-				$("#attack").prop('disabled', true);
+		// delete opponent character 
+		console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
+		currentEnemyElement.remove();
 
-				// delete opponent character 
-				console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-				currentEnemyElement.remove();
+		// check to see if any opponents left
+		if (charSelectionCount <= 0) {
+			
+			// no more opponents then
+			// game won function called
+			userWon();
 
-				// check to see if any opponents left
-				if (charSelectionCount <= 0) {
-					// delete opponent character 
-					// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-					// currentEnemyElement.remove();
+		}
 
-					// disable attack button 
-					// display user msg to select another opponent
-					// wait for another char to be selected
-				// no more opponents then
-					// game won function called
-					console.log("going to call userWon function now " + charSelectionCount);
-				
-					userWon();
+	}
 
-					// enable reset button for new game to be loaded
-				}
 
-			}
+	// counter attack -- decrement current character's hp by current opponent's counter attack power
+	charHealth = charHealth - enemyAttackPwr;
 
-			console.log("counter attack player here");
-			// counter attack -- decrement current character's hp by current opponent's counter attack power
-			charHealth = charHealth - enemyAttackPwr;
-			console.log("charHealth = " + charHealth);
+	if (!isAlive(charHealth)) {
 
-			if (!isAlive(charHealth)) {
+		// game lost function called
+		userLost();
 
-				console.log("going to call userLost function now " + charSelectionCount);
-				// game lost function called
-				userLost();
+		// display attack info to user
+		userFightMsg = currentEnemy.charName + " defeated " + currentPlayer.charName + "."
+		$("#fight-info").html(userFightMsg);
 
-				userFightMsg = currentEnemy.charName + " defeated " + currentPlayer.charName + "."
-				$("#fight-info").html(userFightMsg);
+		// disable attack button
+		$("#attack").prop('disabled', true);
 
-				// disable attack button
-				$("#attack").prop('disabled', true);
+	}
+	else if (isAlive(enemyHealth) && isAlive(charHealth)) {
 
-				// enable reset button for new game to be loaded
-			}
-			else if (isAlive(enemyHealth) && isAlive(charHealth)) {
+		// display attack info to user
+		userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
+		$("#fight-info").html(userFightMsg);
 
-				userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
-				$("#fight-info").html(userFightMsg);
+		// double attack power for current player
+		charAttackPwr += charAttackPwr;
 
-				// double attack power for current player
-				charAttackPwr += charAttackPwr;
+		// update health points info for current char
+		updateCharHPView(currentPlayerElement, charHealth);
 
-				// update health points info for current char
-				updateCharHPView(currentPlayerElement, charHealth);
-
-			}
-
-			// display attack info to user
-			// userFightMsg = currentPlayer.charName + " attacked " + currentEnemy.charName + " causing damage of " + charAttackPwr + " HP.";
-			// userFightMsg += "<br>";
-			// userFightMsg += currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.";
-
-			// $("#fight-info").text(userFightMsg);
-			// $("#fight-info").html(userFightMsg);
-			// $("#fight-info").text(currentEnemy.charName + " counter-attacked " + currentPlayer.charName + " causing damage of " + enemyAttackPwr + " HP.");
-
-			// // double attack power for current player
-			// charAttackPwr += charAttackPwr;
-
-			// // update health points info for current char
-			// updateCharHPView(currentPlayerElement, charHealth);
-
-			// if (isAlive(enemyHealth)) {
-
-			// 	// update health points info for current enemy - 
-			// 	updateCharHPView(currentEnemyElement, enemyHealth);
-
-			// }
-			// else {
-
-			// 	// tell user they defeated the enemy and to choose another enemy
-			// 	userFightMsg = currentPlayer.charName + " defeated " + currentEnemy.charName + "."
-			// 	$("#fight-info").html(userFightMsg);
-
-			// 	// change the user message to show the user to select their first enemy to battle - userMessages.chooseEnemy
-			// 	// tell user to select a character
-			// 	$("#user-msgs").text(userMessages.chooseEnemy);
-
-			// 	// disable attack button
-			// 	$("#attack").prop('disabled', true);
-
-			// 	// delete opponent character 
-			// 	console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-			// 	currentEnemyElement.remove();
-
-			// 	// check to see if any opponents left
-			// 	if (charSelectionCount <= 0) {
-			// 		// delete opponent character 
-			// 		// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-			// 		// currentEnemyElement.remove();
-
-			// 		// disable attack button 
-			// 		// display user msg to select another opponent
-			// 		// wait for another char to be selected
-			// 	// no more opponents then
-			// 		// game won function called
-			// 		console.log("going to call userWon function now " + charSelectionCount);
-				
-			// 		userWon();
-
-			// 		// enable reset button for new game to be loaded
-			// 	}
-
-			// }
-
-		// }
-		// else {
-			// if enemy dead
-
-				// console.log("charSelectionCount = " + charSelectionCount);
-				
-
-				// // check to see if any opponents left
-				// if (charSelectionCount <= 0) {
-				// 	// delete opponent character 
-				// 	// console.log("enemy dead going to remove currentEnemyElement" + currentEnemyElement);
-				// 	// currentEnemyElement.remove();
-
-				// 	// disable attack button 
-				// 	// display user msg to select another opponent
-				// 	// wait for another char to be selected
-				// // no more opponents then
-				// 	// game won function called
-				// 	console.log("going to call userWon function now " + charSelectionCount);
-				
-				// 	userWon();
-
-				// 	// enable reset button for new game to be loaded
-				// }
-		// }
-	// } 
-	// else {
-	// else if current char dead
-	// if (!isAlive(charHealth)) {
-
-	// 	console.log("going to call userLost function now " + charSelectionCount);
-	// 	// game lost function called
-	// 	userLost();
-
-	// 	// disable attack button
-	// 	$("#attack").prop('disabled', true);
-
-	// 	// enable reset button for new game to be loaded
-	// }
+	}
 
 });
 
@@ -439,6 +281,7 @@ $("#attack").on("click", function() {
 // -----------------------------------------------------------------------------------------------
 $("#reset").on("click", function() {
 
+	// reset variables and characters
 	resetGame(false);
 
 });
@@ -452,15 +295,6 @@ $("#reset").on("click", function() {
 // create the view of the character on the page
 function createCharView (char, divArea, arrayIndex) {
 
-	console.log("char = " + char.charName + ", " + char.charDataValue + ", " + char.charImage + ", " + char.charHP + ", " + char.charAttack + ", " + char.charCounterAttack);
-	console.log("divArea = " + divArea);
-
-	// create element inside the divArea
-	// var newDiv = $("<div>");
-	// newDiv.attr("value", char.charDataValue);
-	// console.log("new Div Value = " + char.charDataValue);
-	// newDiv.appendTo("#" + divArea);
-
 	$("#" + divArea).attr("value", char.charDataValue);
 
 	// create name tag
@@ -468,8 +302,7 @@ function createCharView (char, divArea, arrayIndex) {
 	pName.addClass("char-name");
 	pName.text(char.charName);
 	pName.appendTo("#" + divArea);
-	// pName.appendTo(newDiv);
-
+	
 	// create image
 	var imgTag = $("<img>");
 	imgTag.addClass("char-image");
@@ -477,8 +310,6 @@ function createCharView (char, divArea, arrayIndex) {
 	imgTag.attr("width", imgWidth);
 	imgTag.attr("height", imgHeight);
 	imgTag.attr("value", char.charDataValue);
-	console.log("imgTag value = " + imgTag.attr("value"));
-	// imgTag.text(char.charImage);
 	imgTag.appendTo("#" + divArea);
 
 	// create healthpoints view
@@ -504,43 +335,21 @@ function createCharDivs (charNum) {
 // get char object
 function getCharInfo (selectedValue) {
 
-	// declare variable to hold index of object in the charArray
-	// var indexNum;
-
-	// console.log("getCharInfo selectedValue = " + selectedValue);
-
 	// check to see if any of the objects in the charArray have the selectedValue
 	for (var i = 0; i < charArray.length; i++) {
-
-		// console.log("checking for datavalue = " + charArray[i].charDataValue);
 
 		// is the selectedValue in the current arrary object?
 		if (charArray[i].charDataValue === selectedValue) {
 
-			// console.log("data value found = " + i);
 			return charArray[i];
 		}
 	}
 	
-	// indexNum = charArray.indexOf(selectedValue);
-	// console.log("indexNum of Char Array = " + indexNum);
-	// if (charArray.indexOf(selectedValue))
-
 }
 
 // update the user view of the characters health points
 function updateCharHPView (updateElement, hp) {
 
-	// console.log("updateCharHPView function called");
-	// console.log("updateElement = " + updateElement);
-	// console.log("hp = " + hp);
-
-	// // var tempElement = $(updateElement + " p.charHP").html();
-	// // var tempElement = $(updateElement).find("p.charHP").text();
-	// // var tempElement = $(document.getElementById(updateElement)).html();
-	// var tempElement = $(updateElement).html();
-
-	// console.log(tempElement);
 	// find element to update then display the new healthpts
  	$(updateElement.find(".char-hp")).text(hp);
 
@@ -572,7 +381,6 @@ function userLost () {
 	$("#user-msgs").text(userMessages.youLost);
 
 	// delete opponent character 
-	console.log("you are dead going to remove currentPlayerElement" + currentPlayerElement);
 	currentPlayerElement.remove();
 
 	//delete any remaining characters in the #select-defender div
@@ -593,20 +401,12 @@ function resetGame (newLoad) {
 		userFightMsg = "";
 		$("#fight-info").html(userFightMsg);
 
-		// empty opponent id
-
-		// empty select-defender id
-		
 		// empty your-character id
 		currentPlayerElement.remove();
-
-		// add divs back for chars to be recreated
-		// createCharDivs();
 
 		// hide reset button
 		$("#reset").css("visibility", "hidden");
 
-		// reset isPlayer & isEnemy back to false (if this is needed)
 	}
 
 	// disable attack button
@@ -621,10 +421,7 @@ function resetGame (newLoad) {
 		createCharView(charArray[i], "char" + (i), i);
 	}
 
-
 }
-
-
 
 
 // -----------------------------------------------------------------------------------------------

@@ -49,13 +49,6 @@ button {
 }
 
 
-.select-character {
-
-	/*background-color: */
-	
-	
-}
-
 .current-char {
 	
 	background-color: white;
@@ -90,7 +83,6 @@ button {
 	font-size: 20px;
 }
 
-/* not needed here */
 #your-character {
 
 	clear: left;
